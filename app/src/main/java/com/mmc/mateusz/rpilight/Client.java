@@ -1,59 +1,135 @@
 package com.mmc.mateusz.rpilight;
 
-import android.graphics.Color;
-import android.os.AsyncTask;
-
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
 
 
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.internal.operators.observable.ObservableCreate;
+import io.reactivex.schedulers.Schedulers;
+
 //http://androidsrc.net/android-client-server-using-sockets-client-implementation/
-public class Client extends AsyncTask<Void, Void, Void> {
-    int PORT=8880;
 
+public class Client {
+
+    int PORT=8880;
     private String AddressIP;
-    private int Port;
-    ImageView kontrolka;
-    Boolean s;
-    public ConnectionInterface interfaceField=null;
+
+    private Boolean isLightOn;
+
     private Socket clientSocket= null;
     private DataOutputStream outObject;
     private DataInputStream inObject;
-    private int option;
+    private LampListener lampListener;
+
 
     public Client(String aIPaddres) {
         AddressIP = aIPaddres;
     }
 
-    public void openSocket() throws IOException {
-        clientSocket = new Socket(AddressIP, PORT);
+
+    protected Observable observable(){
+       return ObservableCreate.just("GOGOGOG!")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+               .map(new Function() {
+                   @Override
+                   public Object apply(@NonNull Object o) throws Exception {
+                       openSocket();
+                       openStreams();
+                       return null;
+                   }
+               });
     }
 
-    public void openStreams(){
+    public void getLampData() {
+
+        observable().subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        getData();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        closeSocket();
+                        informListener();
+
+                    }
+                });
+
+    }
+
+    private void informListener() {
+
+        if (isLightOn){
+            lampListener.onLampOn();
+        }else {
+            lampListener.onLampOff();
+        }
+
+    }
+
+    public void setLampData() {
+
+        observable().subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                sendData();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+            }
+
+            @Override
+            public void onComplete() {
+                closeSocket();
+                informListener();
+
+            }
+        });
+
+    }
+
+    protected void openSocket() {
         try {
-            //open input stream
+
+            clientSocket = new Socket(AddressIP, PORT);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void openStreams(){
+        try {
+
             inObject = new DataInputStream(clientSocket.getInputStream());
-            //open output stream
             outObject = new DataOutputStream(clientSocket.getOutputStream());
+
         } catch (StreamCorruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -61,61 +137,37 @@ public class Client extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    @Override
-    protected Void doInBackground(Void... arg0) {
+    protected void closeSocket(){
         try {
-            openSocket();
-            openStreams();
-            sendData(option);
-            getData();
+            inObject.close();
+            outObject.close();
+            clientSocket.close();
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }  finally {
-            if (clientSocket != null) {
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
         }
-
-
-        return null;
-
     }
-    public void getData() {
+
+    protected void getData() {
         try {
-            s = inObject.readBoolean();
+            isLightOn = inObject.readBoolean();
 
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    public void sendData(int option){
+
+    protected void sendData(){
         try {
-            outObject.writeInt(option);
+            outObject.writeInt(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    interface ConnectionInterface{
-        void answerFromServer(Boolean boo);
+
+    public void setLampListener(LampListener onLampListener) {
+        this.lampListener = onLampListener;
     }
-
-    protected void onPostExecute(Void aVoid) {
-        super.onPreExecute();
-        if (s != null) {
-            interfaceField.answerFromServer(s);
-        }
-
-    }
-
-
 }

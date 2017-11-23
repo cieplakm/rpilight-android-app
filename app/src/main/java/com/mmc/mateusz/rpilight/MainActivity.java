@@ -4,77 +4,66 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements Contract.View ,Client.ConnectionInterface{
-    private int ONOF;
-    private EditText ip;
-    private String IP;
-    private int PORT;
-    ImageView kontrolka;
-    ImageButton triger;
+public class MainActivity extends AppCompatActivity implements Contract.View{
+    ImageButton btnTriger;
+    ImageButton btnSettings;
+    Contract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        triger = (ImageButton)findViewById(R.id.triger);
+        bindViews();
+        setupBtnListeners();
 
-        SharedPreferences sharedpreferences = getSharedPreferences("DANE", MODE_PRIVATE);
+        presenter = new MainPresenter();
+        presenter.onCreate(this);
 
-        if (sharedpreferences.contains("IP")){
-            IP=sharedpreferences.getString("IP","");
+    }
 
-        }else{
-            Intent intent = new Intent(this, Settings.class);
-            startActivity(intent);
-        }
-
-        ImageButton ibtnSettings = (ImageButton)findViewById(R.id.imageButton);
-
-        ibtnSettings.setOnClickListener(new View.OnClickListener() {
+    private void setupBtnListeners() {
+        btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Settings.class);
-                startActivity(intent);
-                finish();
+
+                openSettingActivity();
+
             }
         });
 
 
-
-
-        triger.setOnClickListener(new View.OnClickListener() {
+        btnTriger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                    Client client = new Client(IP, 1);
-                client.interfaceField=MainActivity.this;
-                    client.execute();
+                presenter.onTrigerClick();
 
             }
         });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Client client = new Client(IP, 2);
-        client.interfaceField=MainActivity.this;
-        client.execute();
+    public void openSettingActivity() {
+
+        Intent intent = new Intent(MainActivity.this, Settings.class);
+        startActivity(intent);
+
     }
 
-    @Override
-    public void answerFromServer(Boolean boo) {
-        if (boo == true){
-            triger.setImageResource(R.drawable.bylboff);
-        }else{
-            triger.setImageResource(R.drawable.bylbon);
-        }
+    private void bindViews() {
+
+        btnTriger = (ImageButton)findViewById(R.id.triger);
+        btnSettings = (ImageButton)findViewById(R.id.imageButton);
+
     }
+
+
+
 }

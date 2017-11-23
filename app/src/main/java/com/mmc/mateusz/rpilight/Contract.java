@@ -6,10 +6,13 @@ package com.mmc.mateusz.rpilight;
 
 public class Contract {
     public interface Presenter {
+        void onCreate(View view);
 
+        void onTrigerClick();
     }
 
     public interface View {
 
+        void openSettingActivity();
     }
 }
