@@ -7,7 +7,7 @@ import android.util.Log;
  */
 
 public class MainPresenter implements Contract.Presenter, LampListener {
-    public static final String IP  = "192.168.1.15";
+    public static final String IP  = "192.168.1.7";
 
     private Contract.View view;
 
@@ -22,6 +22,7 @@ public class MainPresenter implements Contract.Presenter, LampListener {
 
         Client client = new Client(IP);
         client.setLampListener(this);
+        client.getLampData();
 
 
 

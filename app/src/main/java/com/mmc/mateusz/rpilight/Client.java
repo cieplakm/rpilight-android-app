@@ -1,5 +1,7 @@
 package com.mmc.mateusz.rpilight;
 
+import android.util.Log;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.StreamCorruptedException;
@@ -23,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 public class Client {
 
     int PORT=8880;
+
     private String AddressIP;
 
     private Boolean isLightOn;
@@ -47,34 +50,22 @@ public class Client {
                    public Object apply(@NonNull Object o) throws Exception {
                        openSocket();
                        openStreams();
-                       return null;
+                       return new Object();
                    }
                });
     }
 
     public void getLampData() {
+new Thread(new Runnable() {
+    @Override
+    public void run() {
+        isLightOn = false;
+        openSocket();
+        openStreams();
+        getData();
+    }
+}).start();
 
-        observable().subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(@NonNull String s) {
-                        getData();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        closeSocket();
-                        informListener();
-
-                    }
-                });
 
     }
 
@@ -151,6 +142,7 @@ public class Client {
     protected void getData() {
         try {
             isLightOn = inObject.readBoolean();
+            Log.d("LAMP", "Dane: " + isLightOn);
 
         }  catch (IOException e) {
             e.printStackTrace();
