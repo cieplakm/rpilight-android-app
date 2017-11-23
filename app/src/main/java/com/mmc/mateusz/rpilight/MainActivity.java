@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements Client.ConnectionInterface{
+public class MainActivity extends AppCompatActivity implements Contract.View ,Client.ConnectionInterface{
     private int ONOF;
     private EditText ip;
     private String IP;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Client.Connection
             }
         });
 
-       PORT=8880;
+
 
 
         triger.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements Client.Connection
             public void onClick(View v) {
 
 
-                    Client client = new Client(IP,PORT, 1);
+                    Client client = new Client(IP, 1);
                 client.interfaceField=MainActivity.this;
                     client.execute();
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements Client.Connection
     @Override
     protected void onStart() {
         super.onStart();
-        Client client = new Client(IP,PORT, 2);
+        Client client = new Client(IP, 2);
         client.interfaceField=MainActivity.this;
         client.execute();
     }

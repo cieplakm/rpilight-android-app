@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 //http://androidsrc.net/android-client-server-using-sockets-client-implementation/
 public class Client extends AsyncTask<Void, Void, Void> {
+    int PORT=8880;
 
     private String AddressIP;
     private int Port;
@@ -39,28 +40,20 @@ public class Client extends AsyncTask<Void, Void, Void> {
     private DataInputStream inObject;
     private int option;
 
-    public Client(String aIPaddres, int aPort, int oprion) {
+    public Client(String aIPaddres) {
         AddressIP = aIPaddres;
-        Port = aPort;
-
-        this.option=oprion;
-
-
     }
+
     public void openSocket() throws IOException {
-        clientSocket = new Socket(AddressIP, Port);
+        clientSocket = new Socket(AddressIP, PORT);
     }
 
     public void openStreams(){
         try {
             //open input stream
-            inObject = new DataInputStream(
-                    clientSocket.getInputStream());
+            inObject = new DataInputStream(clientSocket.getInputStream());
             //open output stream
-            outObject = new DataOutputStream(
-                    clientSocket.getOutputStream());
-
-
+            outObject = new DataOutputStream(clientSocket.getOutputStream());
         } catch (StreamCorruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -97,7 +90,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
     }
     public void getData() {
         try {
-            s = (Boolean)inObject.readBoolean();
+            s = inObject.readBoolean();
 
         }  catch (IOException e) {
             e.printStackTrace();
@@ -118,7 +111,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
 
     protected void onPostExecute(Void aVoid) {
         super.onPreExecute();
-        if (s!= null) {
+        if (s != null) {
             interfaceField.answerFromServer(s);
         }
 
