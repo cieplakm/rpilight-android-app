@@ -1,13 +1,16 @@
 package com.mmc.mateusz.rpilight;
 
-import android.util.Log;
 
-/**
- * Created by Moni on 2017-11-22.
- */
+import android.widget.Toast;
 
-public class MainPresenter implements Contract.Presenter, LampListener {
-    public static final String IP  = "192.168.1.7";
+import com.mmc.rpilight.OnResponseListener;
+import com.mmc.rpilight.client.Client;
+import com.mmc.rpilight.client.ClientImplementation;
+import com.mmc.rpilight.server.Request;
+import com.mmc.rpilight.server.Response;
+
+public class MainPresenter implements Contract.Presenter {
+    public static final String IP = "192.168.123.57";
 
     private Contract.View view;
 
@@ -20,30 +23,30 @@ public class MainPresenter implements Contract.Presenter, LampListener {
     @Override
     public void onTrigerClick() {
 
-        Client client = new Client(IP);
-        client.setLampListener(this);
-        client.getLampData();
 
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-    }
-    @Override
-    public void onLampOn() {
-        Log.d("LAMP0", "I am ON!");
-    }
+                final Client client = new ClientImplementation(IP);
 
-    @Override
-    public void onLampOff() {
-        Log.d("LAMP0", "I am OFF!");
+                client.setOnReciveListener(new OnResponseListener() {
+                    @Override
+                    public void onRecive(Response response) {
+                        view.showToast("OOOOdowpedz!");
+                    }
+                });
+
+                final Request request = new Request();
+                request.cmd = "Hello!";
+
+
+                client.request(request);
+            }
+        }).start();
+
     }
 }
 
 
-//    @Override
-//    public void answerFromServer(Boolean boo) {
-//        if (boo == true){
-//            btnTriger.setImageResource(R.drawable.bylboff);
-//        }else{
-//            btnTriger.setImageResource(R.drawable.bylbon);
-//        }
-//    }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements Contract.View{
     ImageButton btnTriger;
@@ -64,6 +65,19 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
 
     }
 
+    @Override
+    public void setBulp(Boolean boo) {
+        if (boo == true){
+            btnTriger.setImageResource(R.drawable.bylboff);
+        }else{
+            btnTriger.setImageResource(R.drawable.bylbon);
+        }
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
 
 }
