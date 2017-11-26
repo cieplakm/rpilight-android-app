@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RPiLight.iml" filepath="$PROJECT_DIR$/RPiLight.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rpilight.iml" filepath="$PROJECT_DIR$/rpilight.iml" />
     </modules>
   </component>
 </project>

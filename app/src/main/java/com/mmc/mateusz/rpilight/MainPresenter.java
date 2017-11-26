@@ -10,7 +10,7 @@ import com.mmc.rpilight.server.Request;
 import com.mmc.rpilight.server.Response;
 
 public class MainPresenter implements Contract.Presenter {
-    public static final String IP = "192.168.123.57";
+    public static final String IP = "192.168.1.10";
 
     private Contract.View view;
 
