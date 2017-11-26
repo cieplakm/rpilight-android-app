@@ -10,7 +10,7 @@ import com.mmc.rpilight.server.Request;
 import com.mmc.rpilight.server.Response;
 
 public class MainPresenter implements Contract.Presenter {
-    public static final String IP = "192.168.1.10";
+    public static final String IP = "192.168.1.5";
 
     private Contract.View view;
 
@@ -34,7 +34,7 @@ public class MainPresenter implements Contract.Presenter {
                 client.setOnReciveListener(new OnResponseListener() {
                     @Override
                     public void onRecive(Response response) {
-                        view.showToast("OOOOdowpedz!");
+                        view.showToast(response.getMessage());
                     }
                 });
 
