@@ -99,7 +99,11 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
     }
 
     @Override
+<<<<<<< HEAD
     public void showToast(final String msg) {
+=======
+    public void showToast(String msg) {
+>>>>>>> 86af7a95f4944ba123d906feafb3a4c22110a285
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

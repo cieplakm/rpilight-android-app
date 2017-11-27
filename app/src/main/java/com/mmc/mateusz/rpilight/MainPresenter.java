@@ -8,7 +8,7 @@ import com.mmc.rpilight.server.Request;
 import com.mmc.rpilight.server.Response;
 
 public class MainPresenter implements Contract.Presenter {
-    public static final String IP = "192.168.1.10";
+    public static final String IP = "192.168.1.5";
 
     private Contract.View view;
 
@@ -52,9 +52,18 @@ public class MainPresenter implements Contract.Presenter {
 
                 setLampOn(false);
 
+<<<<<<< HEAD
             }
         }).start();
     }
+=======
+                client.setOnReciveListener(new OnResponseListener() {
+                    @Override
+                    public void onRecive(Response response) {
+                        view.showToast(response.getMessage());
+                    }
+                });
+>>>>>>> 86af7a95f4944ba123d906feafb3a4c22110a285
 
     public void setLampOn(final Boolean on){
         new Thread(new Runnable() {
