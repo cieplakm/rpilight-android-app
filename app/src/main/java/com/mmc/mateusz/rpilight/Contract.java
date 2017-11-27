@@ -9,13 +9,17 @@ public interface Contract {
         void onCreate(View view);
 
         void onTrigerClick();
+
+        void onTrigerOnClick();
+
+        void onTrigerOffClick();
     }
 
     public interface View {
 
         void openSettingActivity();
 
-        void setBulp(Boolean boo);
+        void setBulpOn(Boolean boo);
 
         void showToast(String msg);
     }

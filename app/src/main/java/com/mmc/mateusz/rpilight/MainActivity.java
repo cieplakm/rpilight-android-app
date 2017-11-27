@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
     ImageButton btnTriger;
     ImageButton btnSettings;
     Contract.Presenter presenter;
+    private ImageButton btnTrigerOn;
+    private ImageButton btnTrigerOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,21 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
         btnTriger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 presenter.onTrigerClick();
+            }
+        });
 
+        btnTrigerOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onTrigerOnClick();
+            }
+        });
+
+        btnTrigerOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onTrigerOffClick();
             }
         });
     }
@@ -61,22 +75,37 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
     private void bindViews() {
 
         btnTriger = (ImageButton)findViewById(R.id.triger);
+        btnTrigerOn = (ImageButton)findViewById(R.id.trigerOn);
+        btnTrigerOff = (ImageButton)findViewById(R.id.trigerOff);
         btnSettings = (ImageButton)findViewById(R.id.imageButton);
 
     }
 
     @Override
-    public void setBulp(Boolean boo) {
-        if (boo == true){
-            btnTriger.setImageResource(R.drawable.bylboff);
-        }else{
-            btnTriger.setImageResource(R.drawable.bylbon);
-        }
+    public void setBulpOn(final Boolean boo) {
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (boo){
+                    btnTriger.setImageResource(R.drawable.bylbon);
+                }else{
+                    btnTriger.setImageResource(R.drawable.bylboff);
+                }
+            }
+        });
+
     }
 
     @Override
-    public void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    public void showToast(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

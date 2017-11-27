@@ -11,15 +11,6 @@
     android:background="#000">
 
     <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/triger"
-        android:src="@drawable/wifioff"
-        android:background="@android:color/transparent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton"
@@ -28,5 +19,36 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_menu_24dp"
         android:padding="8dp" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/triger"
+        android:src="@drawable/wifioff"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/trigerOff"
+        android:src="@drawable/bylboff"
+
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/triger"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/trigerOn"
+        android:src="@drawable/bylbon"
+       android:scaleType="centerCrop"
+        android:layout_below="@+id/triger"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
