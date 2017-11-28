@@ -8,11 +8,11 @@ public interface Contract {
     public interface Presenter {
         void onCreate(View view);
 
-        void onTrigerClick();
+        void onInfoStateClick();
 
-        void onTrigerOnClick();
+        void onLampOnClick();
 
-        void onTrigerOffClick();
+        void onLampOffClick();
     }
 
     public interface View {
@@ -22,5 +22,8 @@ public interface Contract {
         void setBulpOn(Boolean boo);
 
         void showToast(String msg);
+
+        void finish();
     }
+
 }

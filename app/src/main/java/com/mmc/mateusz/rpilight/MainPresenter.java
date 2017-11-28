@@ -1,14 +1,20 @@
 package com.mmc.mateusz.rpilight;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.mmc.rpilight.OnResponseListener;
 import com.mmc.rpilight.RPiLight;
 import com.mmc.rpilight.client.Client;
 import com.mmc.rpilight.server.Request;
 import com.mmc.rpilight.server.Response;
 
-public class MainPresenter implements Contract.Presenter {
-    public static final String IP = "192.168.1.5";
+import static com.mmc.mateusz.rpilight.Settings.IP;
+
+public class MainPresenter implements Contract.Presenter,OnResponseListener {
+    public String ip;
 
     private Contract.View view;
 
@@ -18,52 +24,47 @@ public class MainPresenter implements Contract.Presenter {
     public void onCreate(Contract.View view1) {
 
         this.view = view1;
-        client = RPiLight.clientInstance("192.168.1.15");
 
+        setupIP();
 
-
-        client.setOnReciveListener(new OnResponseListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(Response response) {
-                System.out.println("Server responsed! Lamp is ON: " + response.isLampOn());
-                view.setBulpOn(response.isLampOn());
+            public void run() {
+                client = RPiLight.clientInstance(ip);
+                client.setOnReciveListener(MainPresenter.this);
+                requet4Info();
             }
-        });
+        }).start();
 
-        requet4Info();
+
+
+    }
+
+    private void setupIP() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences((Context) view);
+        if (sharedPreferences.contains(IP)){
+            ip = sharedPreferences.getString(IP,"0.0.0.0");
+        }else {
+            view.openSettingActivity();
+            view.finish();
+        }
 
     }
 
     @Override
-    public void onTrigerClick() {
+    public void onInfoStateClick() {
         requet4Info();
     }
 
     @Override
-    public void onTrigerOnClick() {
+    public void onLampOnClick() {
         setLampOn(true);
     }
 
     @Override
-    public void onTrigerOffClick() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                setLampOn(false);
-
-<<<<<<< HEAD
-            }
-        }).start();
+    public void onLampOffClick() {
+        setLampOn(false);
     }
-=======
-                client.setOnReciveListener(new OnResponseListener() {
-                    @Override
-                    public void onRecive(Response response) {
-                        view.showToast(response.getMessage());
-                    }
-                });
->>>>>>> 86af7a95f4944ba123d906feafb3a4c22110a285
 
     public void setLampOn(final Boolean on){
         new Thread(new Runnable() {
@@ -85,6 +86,11 @@ public class MainPresenter implements Contract.Presenter {
 
             }
         }).start();
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        view.setBulpOn(response.isLampOn());
     }
 }
 

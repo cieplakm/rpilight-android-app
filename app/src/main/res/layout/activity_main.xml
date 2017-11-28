@@ -18,6 +18,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_menu_24dp"
+        android:scaleType="centerInside"
+        android:background="@android:color/transparent"
         android:padding="8dp" />
 
     <ImageButton
@@ -31,13 +33,14 @@
         android:layout_alignParentStart="true" />
 
     <ImageButton
+        android:id="@+id/trigerOff"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/trigerOff"
-        android:src="@drawable/bylboff"
 
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/triger"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/bylboff"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -45,9 +48,10 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/trigerOn"
+        android:background="@android:color/transparent"
         android:src="@drawable/bylbon"
-       android:scaleType="centerCrop"
-        android:layout_below="@+id/triger"
+       android:scaleType="centerInside"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
