@@ -8,11 +8,7 @@ public interface Contract {
     public interface Presenter {
         void onCreate(View view);
 
-        void onInfoStateClick();
-
-        void onLampOnClick();
-
-        void onLampOffClick();
+        void onTrigerClick();
     }
 
     public interface View {

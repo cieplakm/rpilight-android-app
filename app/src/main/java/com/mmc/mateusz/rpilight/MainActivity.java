@@ -11,8 +11,6 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
     ImageButton btnTriger;
     ImageButton btnSettings;
     Contract.Presenter presenter;
-    private ImageButton btnTrigerOn;
-    private ImageButton btnTrigerOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +39,11 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
         btnTriger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onInfoStateClick();
+                presenter.onTrigerClick();
             }
         });
 
-        btnTrigerOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onLampOnClick();
-            }
-        });
 
-        btnTrigerOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onLampOffClick();
-            }
-        });
     }
 
     @Override
@@ -71,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
     private void bindViews() {
 
         btnTriger = (ImageButton)findViewById(R.id.triger);
-        btnTrigerOn = (ImageButton)findViewById(R.id.trigerOn);
-        btnTrigerOff = (ImageButton)findViewById(R.id.trigerOff);
         btnSettings = (ImageButton)findViewById(R.id.imageButton);
 
     }

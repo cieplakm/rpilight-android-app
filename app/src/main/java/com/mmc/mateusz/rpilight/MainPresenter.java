@@ -19,6 +19,7 @@ public class MainPresenter implements Contract.Presenter,OnResponseListener {
     private Contract.View view;
 
     Client client;
+    private boolean isLampOn;
 
     @Override
     public void onCreate(Contract.View view1) {
@@ -52,19 +53,14 @@ public class MainPresenter implements Contract.Presenter,OnResponseListener {
     }
 
     @Override
-    public void onInfoStateClick() {
-        requet4Info();
+    public void onTrigerClick() {
+        if (isLampOn){
+            setLampOn(false);
+        }else {
+            setLampOn(true);
+        }
     }
 
-    @Override
-    public void onLampOnClick() {
-        setLampOn(true);
-    }
-
-    @Override
-    public void onLampOffClick() {
-        setLampOn(false);
-    }
 
     public void setLampOn(final Boolean on){
         new Thread(new Runnable() {
@@ -91,6 +87,7 @@ public class MainPresenter implements Contract.Presenter,OnResponseListener {
     @Override
     public void onResponse(Response response) {
         view.setBulpOn(response.isLampOn());
+        isLampOn =  response.isLampOn();
     }
 }
 
